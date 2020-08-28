@@ -28,7 +28,7 @@ variable "vault_repo_name" {
 # TFC Organization and team names
 variable "tfc_org" {
   description = "The Terraform Cloud organization to create things in"
-  default     = "infrastructure-pipelines-workshop"
+  default     = "REPLACE_ME"
 }
 
 variable "tfc_admin_team_name" {
