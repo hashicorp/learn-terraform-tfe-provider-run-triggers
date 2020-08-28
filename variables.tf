@@ -54,7 +54,7 @@ variable "tfc_vault_team_name" {
 # Kubernetes workspace and variables
 variable "tfc_k8s_workspace_name" {
   description = "Kubernetes workspace name"
-  default     = "pipelines-k8s"
+  default     = "learn-terraform-pipelines-k8s"
 }
 
 variable "k8s_username" {
@@ -80,7 +80,7 @@ variable "region" {
 # Consul workspace and variables
 variable "tfc_consul_workspace_name" {
   description = "Consul workspace name"
-  default     = "pipelines-consul"
+  default     = "learn-terraform-pipelines-consul"
 }
 
 variable "consul_namespace" {
@@ -96,5 +96,5 @@ variable "consul_release_name" {
 # Vault workspace and variables
 variable "tfc_vault_workspace_name" {
   description = "Vault workspace name"
-  default     = "pipelines-vault"
+  default     = "learn-terraform-pipelines-vault"
 }
