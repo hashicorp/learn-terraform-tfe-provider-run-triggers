@@ -5,7 +5,7 @@ locals {
 resource "tfe_team" "k8s_ops" {
   name         = var.tfc_k8s_team_name
   organization = var.tfc_org
-  visibility = "organization"
+  visibility   = "organization"
 }
 
 # resource "tfe_organization_membership" "k8s_ops" {
@@ -78,7 +78,7 @@ resource "tfe_variable" "k8s_cluster_name" {
 
 resource "tfe_variable" "k8s_enable_consul_and_vault" {
   key          = "enable_consul_and_vault"
-  value        = false
+  value        = true
   category     = "terraform"
   workspace_id = tfe_workspace.k8s.id
   description  = "Enable Consul and Vault for the secrets cluster"
