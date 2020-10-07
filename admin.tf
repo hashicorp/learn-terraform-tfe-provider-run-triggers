@@ -3,7 +3,7 @@ locals {
 }
 
 resource "tfe_team" "admin" {
-  name         = var.tfc_admin_team_name
+  name         = "${var.tfc_admin_team_name}-${random_pet.learn.id}"
   organization = var.tfc_org
   visibility   = "organization"
 }
