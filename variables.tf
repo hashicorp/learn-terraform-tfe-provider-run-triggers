@@ -74,7 +74,7 @@ variable "k8s_cluster_name" {
 
 variable "region" {
   description = "Google Cloud Region"
-  default     = "us-west1"
+  default     = "us-central1"
 }
 
 # Consul workspace and variables
