@@ -3,7 +3,7 @@ locals {
 }
 
 resource "tfe_team" "k8s_ops" {
-  name         = var.tfc_k8s_team_name
+  name         = "var.tfc_k8s_team_name-${random_pet.learn.id}"
   organization = var.tfc_org
   visibility   = "organization"
 }
@@ -24,7 +24,7 @@ resource "tfe_team_organization_member" "k8s_ops" {
 
 # K8s workspaces
 resource "tfe_workspace" "k8s" {
-  name         = var.tfc_k8s_workspace_name
+  name         = "var.tfc_k8s_workspace_name-${random_pet.learn.id}"
   organization = var.tfc_org
 
   vcs_repo {
