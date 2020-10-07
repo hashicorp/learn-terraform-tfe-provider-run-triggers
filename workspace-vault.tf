@@ -3,7 +3,7 @@ locals {
 }
 
 resource "tfe_team" "vault_ops" {
-  name         = "var.tfc_vault_team_name-${random_pet.learn.id}"
+  name         = "${var.tfc_vault_team_name}-${random_pet.learn.id}"
   organization = var.tfc_org
   visibility   = "organization"
 }
@@ -24,7 +24,7 @@ resource "tfe_team_organization_member" "vault_ops" {
 
 # Vault workspace
 resource "tfe_workspace" "vault" {
-  name         = "var.tfc_vault_workspace_name-${random_pet.learn.id}"
+  name         = "${var.tfc_vault_workspace_name}-${random_pet.learn.id}"
   organization = var.tfc_org
 
   vcs_repo {

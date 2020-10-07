@@ -3,7 +3,7 @@ locals {
 }
 
 resource "tfe_team" "consul_ops" {
-  name         = "var.tfc_consul_team_name-${random_pet.learn.id}"
+  name         = "${var.tfc_consul_team_name}-${random_pet.learn.id}"
   organization = var.tfc_org
   visibility   = "organization"
 }
@@ -24,7 +24,7 @@ resource "tfe_team_organization_member" "consul_ops" {
 
 # Consul workspace
 resource "tfe_workspace" "consul" {
-  name         = "var.tfc_consul_workspace_name-${-${random_pet.learn.id}}"
+  name         = "${var.tfc_consul_workspace_name}-${random_pet.learn.id}"
   organization = var.tfc_org
 
   vcs_repo {
