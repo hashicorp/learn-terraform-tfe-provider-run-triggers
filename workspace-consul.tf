@@ -5,7 +5,7 @@ locals {
 resource "tfe_team" "consul_ops" {
   name         = var.tfc_consul_team_name
   organization = var.tfc_org
-  visibility = "organization"
+  visibility   = "organization"
 }
 
 # resource "tfe_organization_membership" "consul_ops" {
@@ -19,7 +19,7 @@ resource "tfe_team_organization_member" "consul_ops" {
   for_each = { for consul_ops_members in local.consul_ops_members : consul_ops_members.email => consul_ops_members... }
 
   team_id                    = tfe_team.consul_ops.id
-  organization_membership_id = tfe_organization_membership.all[each.key].id
+  organization_membership_id = data.tfe_organization_membership.all[each.key].id
 }
 
 # Consul workspace

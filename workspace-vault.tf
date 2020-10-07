@@ -5,7 +5,7 @@ locals {
 resource "tfe_team" "vault_ops" {
   name         = var.tfc_vault_team_name
   organization = var.tfc_org
-  visibility = "organization"
+  visibility   = "organization"
 }
 
 # resource "tfe_organization_membership" "vault_ops" {
@@ -19,7 +19,7 @@ resource "tfe_team_organization_member" "vault_ops" {
   for_each = { for vault_ops_members in local.vault_ops_members : vault_ops_members.email => vault_ops_members... }
 
   team_id                    = tfe_team.vault_ops.id
-  organization_membership_id = tfe_organization_membership.all[each.key].id
+  organization_membership_id = data.tfe_organization_membership.all[each.key].id
 }
 
 # Vault workspace

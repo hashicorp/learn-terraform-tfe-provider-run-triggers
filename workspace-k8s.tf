@@ -19,7 +19,7 @@ resource "tfe_team_organization_member" "k8s_ops" {
   for_each = { for k8s_ops_members in local.k8s_ops_members : k8s_ops_members.email => k8s_ops_members... }
 
   team_id                    = tfe_team.k8s_ops.id
-  organization_membership_id = tfe_organization_membership.all[each.key].id
+  organization_membership_id = data.tfe_organization_membership.all[each.key].id
 }
 
 # K8s workspaces

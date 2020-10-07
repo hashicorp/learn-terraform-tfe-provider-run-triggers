@@ -5,7 +5,7 @@ locals {
 resource "tfe_team" "admin" {
   name         = var.tfc_admin_team_name
   organization = var.tfc_org
-  visibility = "organization"
+  visibility   = "organization"
 }
 
 # resource "tfe_organization_membership" "admin" {
@@ -19,7 +19,7 @@ resource "tfe_team_organization_member" "admin" {
   for_each = { for admin_members in local.admin_members : admin_members.email => admin_members... }
 
   team_id                    = tfe_team.admin.id
-  organization_membership_id = tfe_organization_membership.all[each.key].id
+  organization_membership_id = data.tfe_organization_membership.all[each.key].id
 }
 
 # Admin team should have admin access to k8s workspace
