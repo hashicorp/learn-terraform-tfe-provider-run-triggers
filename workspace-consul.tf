@@ -22,6 +22,12 @@ resource "tfe_team_organization_member" "consul_ops" {
   organization_membership_id = data.tfe_organization_membership.all[each.key].id
 }
 
+# Get Vault workspace IDs
+data "tfe_workspace_ids" "vault" {
+  names        = [tfe_workspace.vault.name]
+  organization = var.tfc_org
+}
+
 # Consul workspace
 resource "tfe_workspace" "consul" {
   name         = "${var.tfc_consul_workspace_name}-${random_pet.learn.id}"
@@ -32,6 +38,8 @@ resource "tfe_workspace" "consul" {
     oauth_token_id     = var.vcs_oauth_token_id
     ingress_submodules = true
   }
+
+  remote_state_consumer_ids = values(data.tfe_workspace_ids.vault.ids)
 
   queue_all_runs = false
 }

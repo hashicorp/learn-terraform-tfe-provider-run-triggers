@@ -22,6 +22,12 @@ resource "tfe_team_organization_member" "k8s_ops" {
   organization_membership_id = data.tfe_organization_membership.all[each.key].id
 }
 
+# Get Consul and Vault workspace IDs
+data "tfe_workspace_ids" "consul_vault" {
+  names        = [tfe_workspace.consul.name, tfe_workspace.vault.name]
+  organization = var.tfc_org
+}
+
 # K8s workspaces
 resource "tfe_workspace" "k8s" {
   name         = "${var.tfc_k8s_workspace_name}-${random_pet.learn.id}"
@@ -31,6 +37,8 @@ resource "tfe_workspace" "k8s" {
     identifier     = var.k8s_repo_name
     oauth_token_id = var.vcs_oauth_token_id
   }
+
+  remote_state_consumer_ids = values(data.tfe_workspace_ids.consul_vault.ids)
 
   queue_all_runs = false
 }
