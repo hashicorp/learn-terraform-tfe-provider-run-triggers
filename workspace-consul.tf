@@ -34,7 +34,7 @@ resource "tfe_workspace" "consul" {
   organization = var.tfc_org
 
   vcs_repo {
-    identifier         = var.consul_repo_name
+    identifier         = "${var.github_username}/learn-terraform-pipelines-consul"
     oauth_token_id     = var.vcs_oauth_token_id
     ingress_submodules = true
   }

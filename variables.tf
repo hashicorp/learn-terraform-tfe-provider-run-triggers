@@ -1,34 +1,21 @@
 # Google
 variable "google_project_id" {
   description = "The Google Project that these workspaces will deploy to"
-  default     = "REPLACE_ME"
 }
 
 # GitHub
 variable "vcs_oauth_token_id" {
   description = "The VCS OAuth token"
-  default     = "REPLACE_ME"
 }
 
-variable "k8s_repo_name" {
-  description = "The GH repo where the k8s configuration lives"
-  default     = "REPLACE_ME/learn-terraform-pipelines-k8s"
-}
 
-variable "consul_repo_name" {
-  description = "The GH repo where the Consul configuration lives"
-  default     = "REPLACE_ME/learn-terraform-pipelines-consul"
-}
-
-variable "vault_repo_name" {
-  description = "The GH repo where the Vault configuration lives"
-  default     = "REPLACE_ME/learn-terraform-pipelines-vault"
+variable "github_username" {
+  description = "The GH account into which you forked the example repositories"
 }
 
 # TFC Organization and team names
 variable "tfc_org" {
   description = "The Terraform Cloud organization to create things in"
-  default     = "REPLACE_ME"
 }
 
 variable "tfc_admin_team_name" {
