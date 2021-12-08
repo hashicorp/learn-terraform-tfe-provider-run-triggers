@@ -28,7 +28,7 @@ resource "tfe_workspace" "vault" {
   organization = var.tfc_org
 
   vcs_repo {
-    identifier         = var.vault_repo_name
+    identifier         = "${var.github_username}/learn-terraform-pipelines-vault"
     oauth_token_id     = var.vcs_oauth_token_id
     ingress_submodules = true
   }

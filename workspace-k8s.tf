@@ -34,7 +34,7 @@ resource "tfe_workspace" "k8s" {
   organization = var.tfc_org
 
   vcs_repo {
-    identifier     = var.k8s_repo_name
+    identifier     = "${var.github_username}/learn-terraform-pipelines-k8s"
     oauth_token_id = var.vcs_oauth_token_id
   }
 
