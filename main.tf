@@ -2,12 +2,12 @@ terraform {
   required_providers {
     tfe = {
       source  = "hashicorp/tfe"
-      version = "0.25.1"
+      version = "0.41.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "3.0.1"
+      version = "3.4.3"
     }
   }
-required_version = "~> 0.14"
+  required_version = ">= 1.1.0"
 }
