@@ -44,16 +44,6 @@ variable "tfc_k8s_workspace_name" {
   default     = "learn-terraform-pipelines-k8s"
 }
 
-variable "k8s_username" {
-  description = "The Google Project that these workspaces will deploy to"
-  default     = "hashicorp"
-}
-
-variable "k8s_password" {
-  description = "Password variable value for k8s workspace"
-  default     = "infrastructurepipelines"
-}
-
 variable "k8s_cluster_name" {
   description = "ClusterName variable value for k8s workspace"
   default     = "tfc-pipelines"

@@ -36,7 +36,6 @@ resource "tfe_workspace" "consul" {
   vcs_repo {
     identifier         = "${var.github_username}/learn-terraform-pipelines-consul"
     oauth_token_id     = var.vcs_oauth_token_id
-    ingress_submodules = true
   }
 
   remote_state_consumer_ids = values(data.tfe_workspace_ids.vault.ids)
