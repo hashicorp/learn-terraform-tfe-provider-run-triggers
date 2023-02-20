@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 locals {
   k8s_ops_members = csvdecode(file("assets/k8s.csv"))
 }
