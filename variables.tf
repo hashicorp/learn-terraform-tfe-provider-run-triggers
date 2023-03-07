@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 # Google
 variable "google_project_id" {
   description = "The Google Project that these workspaces will deploy to"

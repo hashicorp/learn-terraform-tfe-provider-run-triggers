@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 locals {
   consul_ops_members = csvdecode(file("assets/consul.csv"))
 }

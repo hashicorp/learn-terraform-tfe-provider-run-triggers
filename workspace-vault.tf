@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 locals {
   vault_ops_members = csvdecode(file("assets/vault.csv"))
 }
