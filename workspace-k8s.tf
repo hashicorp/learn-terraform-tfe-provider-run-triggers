@@ -59,37 +59,12 @@ resource "tfe_variable" "k8s_google_project" {
   description  = "Google Project to deploy K8s"
 }
 
-resource "tfe_variable" "k8s_username" {
-  key          = "username"
-  value        = var.k8s_username
-  category     = "terraform"
-  workspace_id = tfe_workspace.k8s.id
-  description  = "Username for GKE clusters"
-}
-
-resource "tfe_variable" "k8s_password" {
-  key          = "password"
-  value        = var.k8s_password
-  category     = "terraform"
-  workspace_id = tfe_workspace.k8s.id
-  description  = "Password for GKE clusters"
-  sensitive    = true
-}
-
 resource "tfe_variable" "k8s_cluster_name" {
   key          = "cluster_name"
   value        = var.k8s_cluster_name
   category     = "terraform"
   workspace_id = tfe_workspace.k8s.id
   description  = "Name of Kubernetes cluster"
-}
-
-resource "tfe_variable" "k8s_enable_consul_and_vault" {
-  key          = "enable_consul_and_vault"
-  value        = true
-  category     = "terraform"
-  workspace_id = tfe_workspace.k8s.id
-  description  = "Enable Consul and Vault for the secrets cluster"
 }
 
 resource "tfe_variable" "k8s_region" {
