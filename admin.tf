@@ -8,13 +8,6 @@ resource "tfe_team" "admin" {
   visibility   = "organization"
 }
 
-# resource "tfe_organization_membership" "admin" {
-#   for_each = { for admin_members in local.admin_members : admin_members.email => admin_members... }
-
-#   organization = var.tfc_org
-#   email        = each.key
-# }
-
 resource "tfe_team_organization_member" "admin" {
   for_each = { for admin_members in local.admin_members : admin_members.email => admin_members... }
 
@@ -22,23 +15,10 @@ resource "tfe_team_organization_member" "admin" {
   organization_membership_id = data.tfe_organization_membership.all[each.key].id
 }
 
-# Admin team should have admin access to k8s workspace
-resource "tfe_team_access" "k8s_admin_team" {
-  access       = "admin"
-  team_id      = tfe_team.admin.id
-  workspace_id = tfe_workspace.k8s.id
-}
-
-# Admin team should have admin access to consul workspace
-resource "tfe_team_access" "consul_admin_team" {
-  access       = "admin"
-  team_id      = tfe_team.admin.id
-  workspace_id = tfe_workspace.consul.id
-}
-
-# Admin team should have admin access to vault workspace
-resource "tfe_team_access" "vault_admin_team" {
-  access       = "admin"
-  team_id      = tfe_team.admin.id
-  workspace_id = tfe_workspace.vault.id
+# Admin access for the entire project will grant admin access
+# to every workspace in the project
+resource "tfe_team_project_access" "project_admin_team" {
+  access     = "admin"
+  team_id    = tfe_team.admin.id
+  project_id = tfe_project.k8s_consul_vault_project.id
 }

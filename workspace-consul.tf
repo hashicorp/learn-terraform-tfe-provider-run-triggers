@@ -32,6 +32,7 @@ data "tfe_workspace_ids" "vault" {
 resource "tfe_workspace" "consul" {
   name         = "${var.tfc_consul_workspace_name}-${random_pet.learn.id}"
   organization = var.tfc_org
+  project_id   = tfe_project.k8s_consul_vault_project.id
 
   vcs_repo {
     identifier         = "${var.github_username}/learn-terraform-pipelines-consul"
@@ -82,13 +83,4 @@ resource "tfe_variable" "consul_release_name" {
   category     = "terraform"
   workspace_id = tfe_workspace.consul.id
   description  = "Release name for Consul"
-}
-
-resource "tfe_variable" "consul_google_credentials" {
-  key          = "GOOGLE_CREDENTIALS"
-  value        = file("assets/gcp-creds.json")
-  category     = "env"
-  workspace_id = tfe_workspace.consul.id
-  description  = "Key for Service account"
-  sensitive    = true
 }

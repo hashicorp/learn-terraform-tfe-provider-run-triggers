@@ -8,13 +8,6 @@ resource "tfe_team" "k8s_ops" {
   visibility   = "organization"
 }
 
-# resource "tfe_organization_membership" "k8s_ops" {
-#   for_each = { for k8s_ops_members in local.k8s_ops_members : k8s_ops_members.email => k8s_ops_members... }
-
-#   organization = var.tfc_org
-#   email        = each.key
-# }
-
 resource "tfe_team_organization_member" "k8s_ops" {
   for_each = { for k8s_ops_members in local.k8s_ops_members : k8s_ops_members.email => k8s_ops_members... }
 
@@ -32,6 +25,7 @@ data "tfe_workspace_ids" "consul_vault" {
 resource "tfe_workspace" "k8s" {
   name         = "${var.tfc_k8s_workspace_name}-${random_pet.learn.id}"
   organization = var.tfc_org
+  project_id   = tfe_project.k8s_consul_vault_project.id
 
   vcs_repo {
     identifier     = "${var.github_username}/learn-terraform-pipelines-k8s"
@@ -73,13 +67,4 @@ resource "tfe_variable" "k8s_region" {
   category     = "terraform"
   workspace_id = tfe_workspace.k8s.id
   description  = "GCP region to deploy clusters"
-}
-
-resource "tfe_variable" "k8s_google_credentials" {
-  key          = "GOOGLE_CREDENTIALS"
-  value        = file("assets/gcp-creds.json")
-  category     = "env"
-  workspace_id = tfe_workspace.k8s.id
-  description  = "Key for Service account"
-  sensitive    = true
 }
