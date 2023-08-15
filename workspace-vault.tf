@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 locals {
   vault_ops_members = csvdecode(file("assets/vault.csv"))
 }
@@ -31,7 +34,6 @@ resource "tfe_workspace" "vault" {
   vcs_repo {
     identifier         = "${var.github_username}/learn-terraform-pipelines-vault"
     oauth_token_id     = var.vcs_oauth_token_id
-    ingress_submodules = true
   }
 
   queue_all_runs = false

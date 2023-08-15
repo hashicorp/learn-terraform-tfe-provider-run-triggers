@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 resource "tfe_project" "k8s_consul_vault_project" {
   organization = var.tfc_org
   name         = "learn-terraform-pipelines"
