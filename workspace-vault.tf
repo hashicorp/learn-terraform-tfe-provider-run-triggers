@@ -32,8 +32,8 @@ resource "tfe_workspace" "vault" {
   project_id   = tfe_project.k8s_consul_vault_project.id
 
   vcs_repo {
-    identifier         = "${var.github_username}/learn-terraform-pipelines-vault"
-    oauth_token_id     = var.vcs_oauth_token_id
+    identifier     = "${var.github_username}/learn-terraform-pipelines-vault"
+    oauth_token_id = var.vcs_oauth_token_id
   }
 
   queue_all_runs = false

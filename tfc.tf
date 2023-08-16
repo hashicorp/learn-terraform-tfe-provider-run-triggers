@@ -27,30 +27,6 @@ resource "tfe_project_variable_set" "project_google_credentials" {
   project_id      = tfe_project.k8s_consul_vault_project.id
 }
 
-# Project policy set
-resource "tfe_policy" "gke_3_nodes" {
-  name         = "gke_3_node"
-  description  = "Limit GKE clusters to 3 nodes"
-  organization = var.tfc_org
-  kind         = "opa"
-  policy       = file("./policy/gke_3_node.rego")
-  query        = "data.terraform.policies.gke_3_nodes.deny"
-  enforce_mode = "mandatory"
-}
-
-resource "tfe_policy_set" "gke_policy_set" {
-  name         = "gke-validation"
-  description  = "Validate GKE clusters"
-  organization = var.tfc_org
-  kind = "opa"
-  policy_ids   = [tfe_policy.gke_3_nodes.id]
-}
-
-resource "tfe_project_policy_set" "name" {
-  policy_set_id = tfe_policy_set.gke_policy_set.id
-  project_id    = tfe_project.k8s_consul_vault_project.id
-}
-
 locals {
   all_members = csvdecode(file("assets/all.csv"))
 }

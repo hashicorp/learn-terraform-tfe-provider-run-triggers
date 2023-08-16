@@ -47,6 +47,26 @@ resource "tfe_team_access" "k8s_team" {
   workspace_id = tfe_workspace.k8s.id
 }
 
+# k8s policy set
+resource "tfe_policy" "gke_3_nodes" {
+  name         = "gke_3_node"
+  description  = "Limit GKE clusters to 3 nodes"
+  organization = var.tfc_org
+  kind         = "opa"
+  policy       = file("./policy/gke_3_node.rego")
+  query        = "data.terraform.policies.gke_3_nodes.deny"
+  enforce_mode = "mandatory"
+}
+
+resource "tfe_policy_set" "gke_policy_set" {
+  name          = "gke-validation"
+  description   = "Validate GKE clusters"
+  organization  = var.tfc_org
+  kind          = "opa"
+  policy_ids    = [tfe_policy.gke_3_nodes.id]
+  workspace_ids = [tfe_workspace.k8s.id]
+}
+
 # k8s variables
 resource "tfe_variable" "k8s_google_project" {
   key          = "google_project"
@@ -70,4 +90,12 @@ resource "tfe_variable" "k8s_region" {
   category     = "terraform"
   workspace_id = tfe_workspace.k8s.id
   description  = "GCP region to deploy clusters"
+}
+
+resource "tfe_variable" "k8s_node_count" {
+  key          = "node_count"
+  value        = 3
+  category     = "terraform"
+  workspace_id = tfe_workspace.k8s.id
+  description  = "Number of nodes in the Kubernetes node pool"
 }
