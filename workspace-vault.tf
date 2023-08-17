@@ -11,13 +11,6 @@ resource "tfe_team" "vault_ops" {
   visibility   = "organization"
 }
 
-# resource "tfe_organization_membership" "vault_ops" {
-#   for_each = { for vault_ops_members in local.vault_ops_members : vault_ops_members.email => vault_ops_members... }
-
-#   organization = var.tfc_org
-#   email        = each.key
-# }
-
 resource "tfe_team_organization_member" "vault_ops" {
   for_each = { for vault_ops_members in local.vault_ops_members : vault_ops_members.email => vault_ops_members... }
 
@@ -29,10 +22,11 @@ resource "tfe_team_organization_member" "vault_ops" {
 resource "tfe_workspace" "vault" {
   name         = "${var.tfc_vault_workspace_name}-${random_pet.learn.id}"
   organization = var.tfc_org
+  project_id   = tfe_project.k8s_consul_vault_project.id
 
   vcs_repo {
-    identifier         = "${var.github_username}/learn-terraform-pipelines-vault"
-    oauth_token_id     = var.vcs_oauth_token_id
+    identifier     = "${var.github_username}/learn-terraform-pipelines-vault"
+    oauth_token_id = var.vcs_oauth_token_id
   }
 
   queue_all_runs = false
@@ -68,13 +62,4 @@ resource "tfe_variable" "vault_organization" {
   category     = "terraform"
   workspace_id = tfe_workspace.vault.id
   description  = "Organization of workspace that created the Kubernetes k8s"
-}
-
-resource "tfe_variable" "vault_google_credentials" {
-  key          = "GOOGLE_CREDENTIALS"
-  value        = file("assets/gcp-creds.json")
-  category     = "env"
-  workspace_id = tfe_workspace.vault.id
-  description  = "Key for Service account"
-  sensitive    = true
 }

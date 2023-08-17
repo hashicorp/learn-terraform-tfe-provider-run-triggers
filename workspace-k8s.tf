@@ -11,13 +11,6 @@ resource "tfe_team" "k8s_ops" {
   visibility   = "organization"
 }
 
-# resource "tfe_organization_membership" "k8s_ops" {
-#   for_each = { for k8s_ops_members in local.k8s_ops_members : k8s_ops_members.email => k8s_ops_members... }
-
-#   organization = var.tfc_org
-#   email        = each.key
-# }
-
 resource "tfe_team_organization_member" "k8s_ops" {
   for_each = { for k8s_ops_members in local.k8s_ops_members : k8s_ops_members.email => k8s_ops_members... }
 
@@ -35,6 +28,7 @@ data "tfe_workspace_ids" "consul_vault" {
 resource "tfe_workspace" "k8s" {
   name         = "${var.tfc_k8s_workspace_name}-${random_pet.learn.id}"
   organization = var.tfc_org
+  project_id   = tfe_project.k8s_consul_vault_project.id
 
   vcs_repo {
     identifier     = "${var.github_username}/learn-terraform-pipelines-k8s"
@@ -51,6 +45,26 @@ resource "tfe_team_access" "k8s_team" {
   access       = "write"
   team_id      = tfe_team.k8s_ops.id
   workspace_id = tfe_workspace.k8s.id
+}
+
+# k8s policy set
+resource "tfe_policy" "gke_3_nodes" {
+  name         = "gke_3_node"
+  description  = "Limit GKE clusters to 3 nodes"
+  organization = var.tfc_org
+  kind         = "opa"
+  policy       = file("./policy/gke_3_node.rego")
+  query        = "data.terraform.policies.gke_3_nodes.deny"
+  enforce_mode = "mandatory"
+}
+
+resource "tfe_policy_set" "gke_policy_set" {
+  name          = "gke-validation"
+  description   = "Validate GKE clusters"
+  organization  = var.tfc_org
+  kind          = "opa"
+  policy_ids    = [tfe_policy.gke_3_nodes.id]
+  workspace_ids = [tfe_workspace.k8s.id]
 }
 
 # k8s variables
@@ -78,11 +92,10 @@ resource "tfe_variable" "k8s_region" {
   description  = "GCP region to deploy clusters"
 }
 
-resource "tfe_variable" "k8s_google_credentials" {
-  key          = "GOOGLE_CREDENTIALS"
-  value        = file("assets/gcp-creds.json")
-  category     = "env"
+resource "tfe_variable" "k8s_node_count" {
+  key          = "node_count"
+  value        = 3
+  category     = "terraform"
   workspace_id = tfe_workspace.k8s.id
-  description  = "Key for Service account"
-  sensitive    = true
+  description  = "Number of nodes in the Kubernetes node pool"
 }

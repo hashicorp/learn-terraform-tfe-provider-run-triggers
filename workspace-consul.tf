@@ -11,13 +11,6 @@ resource "tfe_team" "consul_ops" {
   visibility   = "organization"
 }
 
-# resource "tfe_organization_membership" "consul_ops" {
-#   for_each = { for consul_ops_members in local.consul_ops_members : consul_ops_members.email => consul_ops_members... }
-
-#   organization = var.tfc_org
-#   email        = each.key
-# }
-
 resource "tfe_team_organization_member" "consul_ops" {
   for_each = { for consul_ops_members in local.consul_ops_members : consul_ops_members.email => consul_ops_members... }
 
@@ -35,10 +28,11 @@ data "tfe_workspace_ids" "vault" {
 resource "tfe_workspace" "consul" {
   name         = "${var.tfc_consul_workspace_name}-${random_pet.learn.id}"
   organization = var.tfc_org
+  project_id   = tfe_project.k8s_consul_vault_project.id
 
   vcs_repo {
-    identifier         = "${var.github_username}/learn-terraform-pipelines-consul"
-    oauth_token_id     = var.vcs_oauth_token_id
+    identifier     = "${var.github_username}/learn-terraform-pipelines-consul"
+    oauth_token_id = var.vcs_oauth_token_id
   }
 
   remote_state_consumer_ids = values(data.tfe_workspace_ids.vault.ids)
@@ -84,13 +78,4 @@ resource "tfe_variable" "consul_release_name" {
   category     = "terraform"
   workspace_id = tfe_workspace.consul.id
   description  = "Release name for Consul"
-}
-
-resource "tfe_variable" "consul_google_credentials" {
-  key          = "GOOGLE_CREDENTIALS"
-  value        = file("assets/gcp-creds.json")
-  category     = "env"
-  workspace_id = tfe_workspace.consul.id
-  description  = "Key for Service account"
-  sensitive    = true
 }

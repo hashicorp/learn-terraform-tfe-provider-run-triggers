@@ -1,6 +1,32 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
+resource "tfe_project" "k8s_consul_vault_project" {
+  organization = var.tfc_org
+  name         = var.tfc_project_name
+}
+
+# Project variable set
+resource "tfe_variable_set" "google_credentials" {
+  name         = "google-credentials-${random_pet.learn.id}"
+  description  = "Google credentials for ${random_pet.learn.id}"
+  organization = var.tfc_org
+}
+
+resource "tfe_variable" "k8s_google_credentials" {
+  key             = "GOOGLE_CREDENTIALS"
+  value           = file("assets/gcp-creds.json")
+  category        = "env"
+  description     = "Key for Service account"
+  sensitive       = true
+  variable_set_id = tfe_variable_set.google_credentials.id
+}
+
+resource "tfe_project_variable_set" "project_google_credentials" {
+  variable_set_id = tfe_variable_set.google_credentials.id
+  project_id      = tfe_project.k8s_consul_vault_project.id
+}
+
 locals {
   all_members = csvdecode(file("assets/all.csv"))
 }
