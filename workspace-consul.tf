@@ -11,13 +11,6 @@ resource "tfe_team" "consul_ops" {
   visibility   = "organization"
 }
 
-# resource "tfe_organization_membership" "consul_ops" {
-#   for_each = { for consul_ops_members in local.consul_ops_members : consul_ops_members.email => consul_ops_members... }
-
-#   organization = var.tfc_org
-#   email        = each.key
-# }
-
 resource "tfe_team_organization_member" "consul_ops" {
   for_each = { for consul_ops_members in local.consul_ops_members : consul_ops_members.email => consul_ops_members... }
 

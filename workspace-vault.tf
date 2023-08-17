@@ -11,13 +11,6 @@ resource "tfe_team" "vault_ops" {
   visibility   = "organization"
 }
 
-# resource "tfe_organization_membership" "vault_ops" {
-#   for_each = { for vault_ops_members in local.vault_ops_members : vault_ops_members.email => vault_ops_members... }
-
-#   organization = var.tfc_org
-#   email        = each.key
-# }
-
 resource "tfe_team_organization_member" "vault_ops" {
   for_each = { for vault_ops_members in local.vault_ops_members : vault_ops_members.email => vault_ops_members... }
 
