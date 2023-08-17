@@ -16,11 +16,15 @@ variable "github_username" {
   description = "The GH account into which you forked the example repositories"
 }
 
-# TFC Organization and team names
+# TFC organization, project, and team names
 variable "tfc_org" {
   description = "The Terraform Cloud organization to create things in"
 }
 
+variable "tfc_project_name" {
+  description = "The name of the project to createthe workspaces in"
+  default     = "learn-terraform-pipelines"
+}
 variable "tfc_admin_team_name" {
   description = "The Terraform Cloud team for pipelines admin"
   default     = "tf-learn-admin"

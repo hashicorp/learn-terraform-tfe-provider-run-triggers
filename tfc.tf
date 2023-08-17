@@ -3,7 +3,7 @@
 
 resource "tfe_project" "k8s_consul_vault_project" {
   organization = var.tfc_org
-  name         = "learn-terraform-pipelines"
+  name         = var.tfc_project_name
 }
 
 # Project variable set
